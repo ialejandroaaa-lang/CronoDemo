@@ -35,3 +35,4 @@ export const deleteMotivo = async (id) => {
     if (!response.ok) throw new Error('Error al eliminar motivo');
     return true;
 };
+

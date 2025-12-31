@@ -53,3 +53,4 @@ export const deleteProveedor = async (id) => {
     }
     return true;
 };
+

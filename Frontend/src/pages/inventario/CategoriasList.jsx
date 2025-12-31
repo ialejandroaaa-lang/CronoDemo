@@ -72,3 +72,4 @@ const CategoriasList = () => {
 };
 
 export default CategoriasList;
+

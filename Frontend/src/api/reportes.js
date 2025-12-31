@@ -7,3 +7,4 @@ export const getValoracionInventario = async () => {
     }
     return res.json();
 };
+

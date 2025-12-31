@@ -46,3 +46,4 @@ const GateKeeper = ({ permission, behavior = 'disable', children, fallback = nul
 };
 
 export default GateKeeper;
+

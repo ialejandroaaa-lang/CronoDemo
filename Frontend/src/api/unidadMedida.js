@@ -29,3 +29,4 @@ export const deletePlan = async (id) => {
     if (!res.ok) throw new Error('Error deleting plan');
     return res.json();
 };
+

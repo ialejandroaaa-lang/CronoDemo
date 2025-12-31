@@ -130,3 +130,4 @@ const AjusteDetailModal = ({ ajusteId, onClose }) => {
 };
 
 export default AjusteDetailModal;
+

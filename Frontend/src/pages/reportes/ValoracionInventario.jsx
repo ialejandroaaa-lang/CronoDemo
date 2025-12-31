@@ -176,3 +176,4 @@ const ValoracionInventario = () => {
 };
 
 export default ValoracionInventario;
+

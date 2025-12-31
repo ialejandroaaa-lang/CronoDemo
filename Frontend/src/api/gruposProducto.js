@@ -44,3 +44,4 @@ export const deleteGrupoProducto = async (id) => {
         throw error;
     }
 };
+

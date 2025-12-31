@@ -33,3 +33,4 @@ export const updateAjusteConfig = async (config) => {
         throw error;
     }
 };
+

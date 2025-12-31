@@ -42,3 +42,4 @@ export const updateCotizacion = async (id, cotizacion) => {
     }
     return await res.json();
 };
+

@@ -892,3 +892,4 @@ const DateTreeComponent = ({ tree, selectedPaths, onToggle, depth = 0, path = ""
 };
 
 export default ComprasList;
+

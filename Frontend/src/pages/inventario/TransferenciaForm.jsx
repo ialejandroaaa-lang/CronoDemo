@@ -11,7 +11,7 @@ import { getPlanes as getPlanesUoM } from '../../api/unidadMedida';
 import { getTransferenciaConfig } from '../../api/transferenciaConfig';
 
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const Section = ({ title, children, defaultExpanded = true }) => {
     const [expanded, setExpanded] = useState(defaultExpanded);
@@ -549,3 +549,4 @@ const TransferenciaForm = () => {
 };
 
 export default TransferenciaForm;
+

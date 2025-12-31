@@ -37,3 +37,4 @@ export const updateSequence = async (id, sequence) => {
         throw error;
     }
 };
+

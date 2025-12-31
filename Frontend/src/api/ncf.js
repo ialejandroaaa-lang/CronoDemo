@@ -25,3 +25,4 @@ export const createNcfSequence = async (ncf) => {
     if (!response.ok) throw new Error('Error al crear NCF');
     return response.json();
 };
+

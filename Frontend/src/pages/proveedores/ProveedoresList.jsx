@@ -184,3 +184,4 @@ const ProveedoresList = () => {
 };
 
 export default ProveedoresList;
+

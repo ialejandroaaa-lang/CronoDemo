@@ -18,3 +18,4 @@ export const mockProductos = [
     { id: 4, codigo: 'PROD-004', descripcion: 'Cinta Métrica 5m', categoria: 'Medición', precio: 5.50, stock: 100, estado: 'Activo' },
     { id: 5, codigo: 'PROD-005', descripcion: 'Lija de agua #150', categoria: 'Abrasivos', precio: 0.50, stock: 500, estado: 'Activo' },
 ];
+

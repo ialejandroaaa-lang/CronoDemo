@@ -11,3 +11,4 @@ export const getKardex = async (almacenId) => {
     }
     return res.json();
 };
+

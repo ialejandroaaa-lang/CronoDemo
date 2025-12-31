@@ -326,7 +326,7 @@ const VentasDistribucion = () => {
                     getArticulos(),
                     getAlmacenes(),
                     getSecuenciasNCF(),
-                    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5006/api'}/Monedas`).then(r => r.json())
+                    fetch(`${import.meta.env.VITE_API_URL || '/api'}/Monedas`).then(r => r.json())
                 ]);
 
                 setClients(clientsData);
@@ -420,7 +420,7 @@ const VentasDistribucion = () => {
             return;
         }
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+            const API_BASE = import.meta.env.VITE_API_URL || '/api';
             const res = await fetch(`${API_BASE}/Monedas/tasas?monedaId=${monId}`);
             if (res.ok) {
                 const data = await res.json();
@@ -922,7 +922,7 @@ const VentasDistribucion = () => {
     const handlePrint = () => {
         if (!lastTransactionId) return;
 
-        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5006';
+        const baseUrl = import.meta.env.VITE_API_URL || window.location.origin;
         // Remove '/api' if present for report base
         const reportBase = baseUrl.replace('/api', '');
 
@@ -1905,3 +1905,4 @@ const VentasDistribucion = () => {
 };
 
 export default VentasDistribucion;
+

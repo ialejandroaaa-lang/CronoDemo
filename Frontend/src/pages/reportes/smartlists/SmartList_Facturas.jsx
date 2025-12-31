@@ -19,3 +19,4 @@ const SmartList_Facturas = () => {
 };
 
 export default SmartList_Facturas;
+

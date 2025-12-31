@@ -77,3 +77,4 @@ export const deleteTipo = async (id) => {
     if (!res.ok) throw new Error('Error al eliminar tipo');
     return res.ok;
 };
+

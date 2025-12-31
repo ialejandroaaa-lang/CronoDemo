@@ -95,3 +95,4 @@ export const uploadProductImage = async (file) => {
     }
     return res.json();
 };
+

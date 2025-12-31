@@ -236,3 +236,4 @@ const AtributosArticulos = () => {
 };
 
 export default AtributosArticulos;
+

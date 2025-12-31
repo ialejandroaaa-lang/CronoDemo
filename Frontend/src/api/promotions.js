@@ -68,3 +68,4 @@ export const calculateCartPromotions = async (cartDto) => {
     if (!res.ok) throw new Error("Failed to calculate promotions");
     return res.json();
 };
+

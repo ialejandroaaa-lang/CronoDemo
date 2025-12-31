@@ -3,7 +3,7 @@ import { Button } from '../../components/ui/Button';
 import { Ban, FileText, Plus } from 'lucide-react';
 import NotaForm from './NotaForm';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const ProviderDetails = ({ proveedor, proveedorId }) => {
     const [activeTab, setActiveTab] = useState('pendientes');
@@ -334,3 +334,4 @@ const ProviderDetails = ({ proveedor, proveedorId }) => {
 };
 
 export default ProviderDetails;
+

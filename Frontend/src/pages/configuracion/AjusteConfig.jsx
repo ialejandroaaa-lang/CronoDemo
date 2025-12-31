@@ -188,3 +188,4 @@ const AjusteConfig = () => {
 };
 
 export default AjusteConfig;
+

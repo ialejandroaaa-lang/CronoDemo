@@ -4,7 +4,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { X, Save, FileText, AlertCircle, RefreshCcw } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const NotaForm = ({ onClose, onSuccess, initialProveedorId }) => {
     const [proveedores, setProveedores] = useState([]);
@@ -332,3 +332,4 @@ const NotaForm = ({ onClose, onSuccess, initialProveedorId }) => {
 };
 
 export default NotaForm;
+

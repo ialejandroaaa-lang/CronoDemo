@@ -16,3 +16,4 @@ const MaintenancePage = ({ title }) => {
 };
 
 export default MaintenancePage;
+

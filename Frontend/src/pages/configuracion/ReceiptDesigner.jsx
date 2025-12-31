@@ -21,7 +21,7 @@ import { Input } from '../../components/ui/Input';
 import { useNavigate } from 'react-router-dom';
 import { getReceiptTemplates, getReceiptTemplateById, createReceiptTemplate, updateReceiptTemplate, setDefaultTemplate, duplicateTemplate } from '../../api/receiptTemplates';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const ReceiptDesigner = () => {
     const navigate = useNavigate();
@@ -1419,3 +1419,4 @@ const ReceiptDesigner = () => {
 };
 
 export default ReceiptDesigner;
+

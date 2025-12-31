@@ -26,3 +26,4 @@ export const DeleteButton = ({ onClick }) => {
         </Button>
     );
 };
+

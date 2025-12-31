@@ -6,7 +6,7 @@ import { getArticulos } from '../../api/articulos';
 import { getMotivos } from '../../api/motivosAjuste';
 import { createAjuste } from '../../api/ajustes'; // Direct import or use fetch
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 // Helper for currency formatting
 const formatCurrency = (amount) => {
@@ -934,3 +934,4 @@ const HistorialArticulo = () => {
 };
 
 export default HistorialArticulo;
+

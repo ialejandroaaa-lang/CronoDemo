@@ -47,3 +47,4 @@ export const getNCFSequences = async () => {
 
 // Alias for backward compatibility
 export const getSecuenciasNCF = getNCFSequences;
+

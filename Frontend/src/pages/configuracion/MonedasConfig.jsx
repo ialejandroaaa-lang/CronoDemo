@@ -6,7 +6,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '.
 import { Plus, Trash2, Calendar, Save } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const MonedasConfig = () => {
     const [monedas, setMonedas] = useState([]);
@@ -263,3 +263,4 @@ const RateForm = ({ onSubmit, initialData, onCancel }) => {
 }
 
 export default MonedasConfig;
+

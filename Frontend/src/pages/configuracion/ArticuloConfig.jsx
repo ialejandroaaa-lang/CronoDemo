@@ -11,7 +11,7 @@ import { getPlanes, getPlan } from '../../api/unidadMedida';
 import { getGruposProducto } from '../../api/gruposProducto';
 import { Search } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 const ArticuloConfig = () => {
     const navigate = useNavigate();
@@ -599,3 +599,4 @@ const ArticuloConfig = () => {
 };
 
 export default ArticuloConfig;
+

@@ -39,3 +39,4 @@ export const anularCompra = async (id) => {
     }
     return res.json();
 };
+

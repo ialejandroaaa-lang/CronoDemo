@@ -24,3 +24,4 @@ export const deleteGrupoImpuesto = async (id) => {
     if (!res.ok) throw new Error('Error al eliminar grupo de impuestos');
     return res.ok;
 };
+

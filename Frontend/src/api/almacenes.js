@@ -24,3 +24,4 @@ export const deleteAlmacen = async (id) => {
     if (!res.ok) throw new Error('Error al eliminar almacén');
     return res.ok;
 };
+

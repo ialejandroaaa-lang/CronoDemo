@@ -3,7 +3,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ReceiptRenderer from './ReceiptRenderer';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 export const printReceipt = async (data) => {
     try {
@@ -138,3 +138,4 @@ export const printReceipt = async (data) => {
         alert('Error al imprimir recibo: Verifique la consola para más detalles.');
     }
 };
+

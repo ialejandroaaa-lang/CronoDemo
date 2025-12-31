@@ -51,3 +51,4 @@ export const generarNumeroArticulo = async (grupoProducto) => {
     }
     return res.json();
 };
+

@@ -17,3 +17,4 @@ export const updateReciboConfig = async (config) => {
     if (!response.ok) throw new Error('Error updating config');
     return await response.json();
 };
+

@@ -105,3 +105,4 @@ const PromotionsList = () => {
 };
 
 export default PromotionsList;
+

@@ -62,3 +62,4 @@ export const duplicateTemplate = async (id) => {
     if (!response.ok) throw new Error('Error al duplicar plantilla');
     return response.json();
 };
+

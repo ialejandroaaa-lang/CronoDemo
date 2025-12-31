@@ -167,3 +167,4 @@ const KardexList = () => {
 };
 
 export default KardexList;
+

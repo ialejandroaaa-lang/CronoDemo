@@ -87,3 +87,4 @@ const StockHoverCard = ({ articuloId, warehouses = [] }) => {
 };
 
 export default StockHoverCard;
+

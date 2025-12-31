@@ -148,3 +148,4 @@ const VendedoresList = () => {
 };
 
 export default VendedoresList;
+

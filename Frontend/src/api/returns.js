@@ -73,3 +73,4 @@ export const getCreditNotesHistory = async (start, end) => {
         throw error;
     }
 };
+

@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL + '/UnidadMedida';
+const API_URL = (import.meta.env.VITE_API_URL || '/api') + '/UnidadMedida';
 
 export const getPlanes = async () => {
     const response = await fetch(`${API_URL}/Planes`);
@@ -30,3 +30,4 @@ export const deletePlan = async (planId) => {
     if (!response.ok) throw new Error('Error al eliminar plan');
     return true;
 };
+

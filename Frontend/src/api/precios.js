@@ -34,3 +34,4 @@ export const getReportePrecios = async () => {
     if (!res.ok) throw new Error('Error al obtener reporte de precios');
     return res.json();
 };
+

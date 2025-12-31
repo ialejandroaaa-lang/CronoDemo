@@ -38,10 +38,10 @@ const UsuariosList = () => {
         setLoading(true);
         try {
             const [usersResp, groupsResp] = await Promise.all([
-                fetch(`${import.meta.env.VITE_API_URL}/SecurityEditor/users`, {
+                fetch(`${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/users`, {
                     headers: { 'Authorization': `Bearer ${user.token}` }
                 }),
-                fetch(`${import.meta.env.VITE_API_URL}/SecurityEditor/groups`, {
+                fetch(`${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/groups`, {
                     headers: { 'Authorization': `Bearer ${user.token}` }
                 })
             ]);
@@ -90,8 +90,8 @@ const UsuariosList = () => {
         setSaving(true);
         try {
             const url = selectedUser
-                ? `${import.meta.env.VITE_API_URL}/SecurityEditor/users/${selectedUser.id}`
-                : `${import.meta.env.VITE_API_URL}/SecurityEditor/users`;
+                ? `${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/users/${selectedUser.id}`
+                : `${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/users`;
 
             const method = selectedUser ? 'PUT' : 'POST';
 
@@ -123,7 +123,7 @@ const UsuariosList = () => {
         if (!newPassword) return;
         setSaving(true);
         try {
-            const resp = await fetch(`${import.meta.env.VITE_API_URL}/SecurityEditor/users/${selectedUser.id}/reset-password`, {
+            const resp = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/users/${selectedUser.id}/reset-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -430,3 +430,4 @@ const UsuariosList = () => {
 };
 
 export default UsuariosList;
+

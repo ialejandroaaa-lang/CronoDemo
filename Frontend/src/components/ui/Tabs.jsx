@@ -45,3 +45,4 @@ export const TabsContent = ({ value, children, className = '' }) => {
         </div>
     );
 };
+

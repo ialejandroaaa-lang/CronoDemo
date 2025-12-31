@@ -33,3 +33,4 @@ export const deleteNivelPrecio = async (id) => {
     if (!res.ok) throw new Error('Error deleting price level');
     return true;
 };
+

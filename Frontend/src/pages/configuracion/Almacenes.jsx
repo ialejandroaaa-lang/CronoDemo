@@ -178,3 +178,4 @@ const Almacenes = () => {
 };
 
 export default Almacenes;
+

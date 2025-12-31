@@ -8,8 +8,8 @@ import { calculateCartPromotions } from '../../api/promotions';
 import CheckoutModal from '../../components/ventas/CheckoutModal';
 import GateKeeper from '../../components/auth/GateKeeper';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
-const API_UPLOADS = 'http://localhost:5006';
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_UPLOADS = window.location.origin;
 
 import { useLocation } from 'react-router-dom';
 
@@ -909,3 +909,4 @@ const PosPage = () => {
 };
 
 export default PosPage;
+
