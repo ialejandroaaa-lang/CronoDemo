@@ -1,0 +1,19 @@
+# Avoid copying large/temp files to Docker build context
+node_modules/
+.git/
+Frontend/node_modules/
+Frontend/dist/
+Backend/bin/
+Backend/obj/
+Backend/wwwroot/*
+DIST/
+*.db
+*.db-shm
+*.db-wal
+*.zip
+*.log
+.vs/
+.vscode/
+bin/
+obj/
+publish/
