@@ -1,0 +1,1 @@
+System.register([],function(t,n){"use strict";return{execute:function(){t("getPlan",async t=>{if(!t)return null;const n=await fetch(`http://localhost:5006/api/UnidadMedida/Planes/${t}`);return n.ok?await n.json():null})}}});

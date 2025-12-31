@@ -1,0 +1,7 @@
+c:\POS CRONO\DEMO_SQLITE\DIST\Backend\appsettings.Development.json
+c:\POS CRONO\DEMO_SQLITE\DIST\Backend\appsettings.json
+c:\POS CRONO\DEMO_SQLITE\DIST\Backend\PosCrono.API.pdb
+c:\POS CRONO\DEMO_SQLITE\DIST\Backend\aspnetcorev2_inprocess.dll
+c:\POS CRONO\DEMO_SQLITE\DIST\Backend\Microsoft.Data.SqlClient.SNI.dll
+c:\POS CRONO\DEMO_SQLITE\DIST\Backend\e_sqlite3.dll
+c:\POS CRONO\DEMO_SQLITE\DIST\Backend\PosCrono.API.exe
