@@ -68,6 +68,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+// Fallback to index.html for SPA routing
+app.MapFallbackToFile("index.html");
 
 // Database Initialization and Seeding
 using (var scope = app.Services.CreateScope())
