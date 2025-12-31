@@ -1,0 +1,1 @@
+         userManager.AddToRoleAsync(adminUser, "ADMINISTRADORES").GetAwaiter().GetResult();

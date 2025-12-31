@@ -1,0 +1,5 @@
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ProveedoresMaster' AND COLUMN_NAME = 'TipoComprobante')
+BEGIN
+    ALTER TABLE ProveedoresMaster
+    ADD TipoComprobante NVARCHAR(20) NULL;
+END

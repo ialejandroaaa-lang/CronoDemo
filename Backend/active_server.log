@@ -1,0 +1,802 @@
+Using launch settings from c:\POS CRONO\Backend\Properties\launchSettings.json...
+warn: Microsoft.EntityFrameworkCore.Model.Validation[30000]
+      No store type was specified for the decimal property 'ImpuestoDefault' on entity type 'CompanyConfiguration'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (76ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PaymentConfigurations' AND xtype='U')
+              CREATE TABLE PaymentConfigurations (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  UseAutoSequence bit NOT NULL DEFAULT 1,
+                  Prefix nvarchar(10) DEFAULT 'PAGO-',
+                  SequenceLength int DEFAULT 6,
+                  CurrentValue int DEFAULT 0,
+                  Separator nvarchar(5) DEFAULT '-'
+              )
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (16ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CompanyConfigurations' AND xtype='U')
+              CREATE TABLE CompanyConfigurations (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  NombreEmpresa nvarchar(200),
+                  RNC nvarchar(50),
+                  Direccion nvarchar(500),
+                  Telefono nvarchar(50),
+                  Correo nvarchar(100),
+                  SitioWeb nvarchar(100),
+                  LogoPath nvarchar(255),
+                  ImpuestoDefault decimal(18,2) DEFAULT 18.00,
+                  MonedaPrincipal nvarchar(10) DEFAULT 'DOP'
+              )
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (145ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ClientConfigurations' AND xtype='U')
+              BEGIN
+                  CREATE TABLE ClientConfigurations (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      UseAutoSequence bit NOT NULL DEFAULT 1,
+                      UseInitials bit NOT NULL DEFAULT 0,
+                      Initials nvarchar(10) DEFAULT 'CL',
+                      SequenceLength int DEFAULT 4,
+                      CurrentValue int DEFAULT 1,
+                      Separator nvarchar(5) DEFAULT '-',
+                      NameCase nvarchar(20) DEFAULT 'normal',
+                      AllowNegativeStock bit NOT NULL DEFAULT 0
+                  )
+                  -- Insert Default
+                  INSERT INTO ClientConfigurations (UseAutoSequence) VALUES (1)
+              END
+              ELSE
+              BEGIN
+                  -- Ensure columns exist if table already existed
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ClientConfigurations]') AND name = 'NameCase')
+                      ALTER TABLE ClientConfigurations ADD NameCase nvarchar(20) DEFAULT 'normal' WITH VALUES
+                  
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ClientConfigurations]') AND name = 'AllowNegativeStock')
+                      ALTER TABLE ClientConfigurations ADD AllowNegativeStock bit NOT NULL DEFAULT 0 WITH VALUES
+      
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ClientConfigurations]') AND name = 'Separator')
+                      ALTER TABLE ClientConfigurations ADD Separator nvarchar(5) DEFAULT '-' WITH VALUES
+      
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ClientConfigurations]') AND name = 'Initials')
+                      ALTER TABLE ClientConfigurations ADD Initials nvarchar(10) DEFAULT 'CL' WITH VALUES
+      
+                   IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ClientConfigurations]') AND name = 'UseInitials')
+                      ALTER TABLE ClientConfigurations ADD UseInitials bit NOT NULL DEFAULT 0 WITH VALUES
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM Clients WHERE Id = 1 OR Name = 'CONSUMIDOR FINAL')
+              BEGIN
+                  SET IDENTITY_INSERT Clients ON
+                  INSERT INTO Clients (Id, Code, Name, Company, TaxId, Phone, Email, Address, Status, Balance, SellerName)
+                  VALUES (1, 'CLIENT-0001', 'CONSUMIDOR FINAL', 'GENERAL', '000-00000-0', '000-000-0000', 'general@crono.com', 'CIUDAD', 'Active', 0, 'SISTEMA')
+                  SET IDENTITY_INSERT Clients OFF
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (63ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[MovimientosInventario]') AND type in (N'U'))
+              BEGIN
+                  CREATE TABLE [dbo].[MovimientosInventario](
+                      [Id] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+                      [ArticuloId] [int] NOT NULL,
+                      [FechaMovimiento] [datetime] NOT NULL DEFAULT GETDATE(),
+                      [TipoMovimiento] [nvarchar](20) NOT NULL,
+                      [Cantidad] [decimal](18, 4) NOT NULL,
+                      [CostoUnitario] [decimal](18, 4) NOT NULL DEFAULT 0,
+                      [Referencia] [nvarchar](100) NULL,
+                      [Usuario] [nvarchar](50) NULL,
+                      [AlmacenId] [int] NULL,
+                      [StockAnterior] [decimal](18, 4) NULL,
+                      [StockNuevo] [decimal](18, 4) NULL,
+                      [UnidadMedida] [nvarchar](50) NULL,
+                      [CantidadOriginal] [decimal](18, 4) NULL,
+                      [UnidadOriginal] [nvarchar](50) NULL
+                  )
+              END
+              ELSE
+              BEGIN
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[MovimientosInventario]') AND name = 'CantidadOriginal')
+                  BEGIN
+                      ALTER TABLE MovimientosInventario ADD CantidadOriginal decimal(18, 4) NULL
+                  END
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[MovimientosInventario]') AND name = 'UnidadOriginal')
+                  BEGIN
+                      ALTER TABLE MovimientosInventario ADD UnidadOriginal nvarchar(50) NULL
+                  END
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      ALTER TABLE MovimientosInventario ALTER COLUMN TipoMovimiento nvarchar(50) NOT NULL
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (33ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ArticulosMaster]') AND name = 'StockActual')
+              BEGIN
+                   ALTER TABLE ArticulosMaster ADD StockActual decimal(18, 4) NOT NULL DEFAULT 0
+              END
+              
+              -- Sanitize NULLs just in case
+              UPDATE ArticulosMaster SET StockActual = 0 WHERE StockActual IS NULL
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MotivosAjuste' AND xtype='U')
+              CREATE TABLE MotivosAjuste (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  Grupo nvarchar(100) NOT NULL,
+                  Codigo nvarchar(20) NOT NULL,
+                  Motivo nvarchar(200) NOT NULL,
+                  Activo bit NOT NULL DEFAULT 1,
+                  RequiereAutorizacion bit NOT NULL DEFAULT 0
+              )
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (30ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='TransferenciasMaster' AND xtype='U')
+              CREATE TABLE TransferenciasMaster (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  NumeroTransferencia nvarchar(50) NOT NULL,
+                  Fecha datetime NOT NULL,
+                  AlmacenOrigenId int NOT NULL,
+                  AlmacenDestinoId int NOT NULL,
+                  Estado nvarchar(50) DEFAULT 'Completado',
+                  Observaciones nvarchar(500),
+                  Usuario nvarchar(50),
+                  FechaCreacion datetime DEFAULT GETDATE()
+              )
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='TransferenciasDetalle' AND xtype='U')
+              CREATE TABLE TransferenciasDetalle (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  TransferenciaId int NOT NULL FOREIGN KEY REFERENCES TransferenciasMaster(Id),
+                  ArticuloId int NOT NULL,
+                  Cantidad decimal(18,4) NOT NULL,
+                  UnidadMedida nvarchar(50),
+                  CostoUnitario decimal(18,4) NOT NULL
+              )
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (76ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='NCF_Secuencias' AND xtype='U')
+              BEGIN
+                  CREATE TABLE NCF_Secuencias (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      TipoNCF nvarchar(20) NOT NULL,
+                      Nombre nvarchar(200),
+                      Prefijo nvarchar(10),
+                      Desde int DEFAULT 1,
+                      Hasta int DEFAULT 100000,
+                      Actual int DEFAULT 0,
+                      Activo bit DEFAULT 1
+                  )
+      
+                  -- Seed Defaults
+                  INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento)
+                  VALUES 
+                  ('B01', 'Factura de Crédito Fiscal', 'B01', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B02', 'Factura de Consumo', 'B02', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B03', 'Notas de Débito', 'B03', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B04', 'Notas de Crédito', 'B04', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B11', 'Proveedor Informal', 'B11', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B12', 'Registro Único de Ingresos', 'B12', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B13', 'Gastos Menores', 'B13', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B14', 'Regímenes Especiales', 'B14', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B15', 'Comprobantes Gubernamentales', 'B15', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B16', 'Exportaciones', 'B16', 1, 100000, 0, 1, '2026-12-31'),
+                  ('B17', 'Pagos al Exterior', 'B17', 1, 100000, 0, 1, '2026-12-31')
+              END
+              
+              -- Insert missing types if table already exists
+              IF NOT EXISTS (SELECT * FROM NCF_Secuencias WHERE TipoNCF = 'B11') INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento) VALUES ('B11', 'Proveedor Informal', 'B11', 1, 100000, 0, 1, '2026-12-31')
+              IF NOT EXISTS (SELECT * FROM NCF_Secuencias WHERE TipoNCF = 'B12') INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento) VALUES ('B12', 'Registro Único de Ingresos', 'B12', 1, 100000, 0, 1, '2026-12-31')
+              IF NOT EXISTS (SELECT * FROM NCF_Secuencias WHERE TipoNCF = 'B13') INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento) VALUES ('B13', 'Gastos Menores', 'B13', 1, 100000, 0, 1, '2026-12-31')
+              IF NOT EXISTS (SELECT * FROM NCF_Secuencias WHERE TipoNCF = 'B14') INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento) VALUES ('B14', 'Regímenes Especiales', 'B14', 1, 100000, 0, 1, '2026-12-31')
+              IF NOT EXISTS (SELECT * FROM NCF_Secuencias WHERE TipoNCF = 'B15') INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento) VALUES ('B15', 'Comprobantes Gubernamentales', 'B15', 1, 100000, 0, 1, '2026-12-31')
+              IF NOT EXISTS (SELECT * FROM NCF_Secuencias WHERE TipoNCF = 'B16') INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento) VALUES ('B16', 'Exportaciones', 'B16', 1, 100000, 0, 1, '2026-12-31')
+              IF NOT EXISTS (SELECT * FROM NCF_Secuencias WHERE TipoNCF = 'B17') INSERT INTO NCF_Secuencias (TipoNCF, Nombre, Prefijo, Desde, Hasta, Actual, Activo, FechaVencimiento) VALUES ('B17', 'Pagos al Exterior', 'B17', 1, 100000, 0, 1, '2026-12-31')
+      
+              
+              IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[NCF_Secuencias]') AND name = 'FechaVencimiento')
+              BEGIN
+                  ALTER TABLE NCF_Secuencias ADD FechaVencimiento datetime DEFAULT '2026-12-31'
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (31ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF EXISTS (SELECT * FROM sysobjects WHERE name='CompanyConfigurations' AND xtype='U')
+              BEGIN
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[CompanyConfigurations]') AND name = 'DefaultClientId')
+                  BEGIN
+                      ALTER TABLE CompanyConfigurations ADD DefaultClientId int NULL
+                  END
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (35ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='DocumentSequences' AND xtype='U')
+              BEGIN
+                  CREATE TABLE DocumentSequences (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      Code nvarchar(50) NOT NULL,
+                      Name nvarchar(100) NOT NULL,
+                      Prefix nvarchar(10),
+                      CurrentValue int DEFAULT 0,
+                      Length int DEFAULT 6,
+                      LastModified datetime DEFAULT GETDATE()
+                  )
+      
+                  -- Seed Defaults
+                  INSERT INTO DocumentSequences (Code, Name, Prefix, CurrentValue, Length) VALUES 
+                  ('SALES_INVOICE', 'Factura de Venta', 'FACT-', 0, 6),
+                  ('PURCHASE_ORDER', 'Orden de Compra', 'OC-', 0, 6),
+                  ('GOODS_RECEIPT', 'Recepción de Mercancía', 'REC-', 0, 6)
+              END
+              
+              -- Ensure missing defaults if table exists
+              IF NOT EXISTS (SELECT * FROM DocumentSequences WHERE Code = 'SALES_INVOICE') INSERT INTO DocumentSequences (Code, Name, Prefix) VALUES ('SALES_INVOICE', 'Factura de Venta', 'FACT-')
+              IF NOT EXISTS (SELECT * FROM DocumentSequences WHERE Code = 'PURCHASE_ORDER') INSERT INTO DocumentSequences (Code, Name, Prefix) VALUES ('PURCHASE_ORDER', 'Orden de Compra', 'OC-')
+              IF NOT EXISTS (SELECT * FROM DocumentSequences WHERE Code = 'GOODS_RECEIPT') INSERT INTO DocumentSequences (Code, Name, Prefix) VALUES ('GOODS_RECEIPT', 'Recepción de Mercancía', 'REC-')
+              if NOT EXISTS (SELECT * FROM DocumentSequences WHERE Code = 'DIRECT_PURCHASE') INSERT INTO DocumentSequences (Code, Name, Prefix) VALUES ('DIRECT_PURCHASE', 'Factura de Compra Directa', 'FD-')
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (31ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF EXISTS (SELECT * FROM sysobjects WHERE name='ReceiptTemplates' AND xtype='U')
+              BEGIN
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ReceiptTemplates]') AND name = 'PrinterName')
+                  BEGIN
+                      ALTER TABLE ReceiptTemplates ADD PrinterName nvarchar(255) NULL
+                  END
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (23ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF EXISTS (SELECT * FROM sysobjects WHERE name='ComprasDetalle' AND xtype='U')
+              BEGIN
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[ComprasDetalle]') AND name = 'CantTotal')
+                  BEGIN
+                      ALTER TABLE ComprasDetalle ADD CantTotal decimal(18, 4) DEFAULT 0
+                  END
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='AuditLog' AND xtype='U')
+              CREATE TABLE AuditLog (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  TableName nvarchar(100) NOT NULL,
+                  RecordId nvarchar(50),
+                  Action nvarchar(20) NOT NULL,
+                  OldValues nvarchar(MAX),
+                  NewValues nvarchar(MAX),
+                  Usuario nvarchar(50),
+                  Fecha datetime DEFAULT GETDATE()
+              )
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Monedas' AND xtype='U')
+              BEGIN
+                  CREATE TABLE Monedas (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      Codigo nvarchar(10) NOT NULL,
+                      Nombre nvarchar(100) NOT NULL,
+                      Simbolo nvarchar(5) NOT NULL,
+                      EsFuncional bit NOT NULL DEFAULT 0,
+                      Activo bit NOT NULL DEFAULT 1
+                  )
+      
+                  -- Seed Defaults
+                  INSERT INTO Monedas (Codigo, Nombre, Simbolo, EsFuncional, Activo) VALUES 
+                  ('DOP', 'Peso Dominicano', 'RD$', 1, 1),
+                  ('USD', 'Dólar Estadounidense', 'US$', 0, 1)
+              END
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='TasasCambio' AND xtype='U')
+              BEGIN
+                  CREATE TABLE TasasCambio (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      MonedaId int NOT NULL FOREIGN KEY REFERENCES Monedas(Id),
+                      Tasa decimal(18,4) NOT NULL,
+                      FechaInicio datetime NOT NULL DEFAULT GETDATE(),
+                      FechaFin datetime NULL
+                  )
+      
+                  -- Seed initial USD rate
+                  DECLARE @MonedaIdUSD int = (SELECT Id FROM Monedas WHERE Codigo = 'USD')
+                  IF @MonedaIdUSD IS NOT NULL
+                  BEGIN
+                      INSERT INTO TasasCambio (MonedaId, Tasa, FechaInicio) VALUES (@MonedaIdUSD, 60.50, GETDATE())
+                  END
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (41ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF EXISTS (SELECT * FROM sysobjects WHERE name='VentasMaster' AND xtype='U')
+              BEGIN
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[VentasMaster]') AND name = 'MonedaId')
+                  BEGIN
+                      ALTER TABLE VentasMaster ADD MonedaId int NULL
+                      ALTER TABLE VentasMaster ADD TasaCambio decimal(18,4) DEFAULT 1.0
+                  END
+                  
+                  -- Use dynamic SQL for the update to avoid compilation errors if column was JUST added
+                  DECLARE @DefaultMonedaId int = (SELECT TOP 1 Id FROM Monedas WHERE EsFuncional = 1)
+                  IF @DefaultMonedaId IS NOT NULL
+                  BEGIN
+                      DECLARE @UpdateSql nvarchar(MAX) = N'UPDATE VentasMaster SET MonedaId = ' + CAST(@DefaultMonedaId as nvarchar) + N' WHERE MonedaId IS NULL'
+                      EXEC sp_executesql @UpdateSql
+                  END
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[@normalizedName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Description], [a].[IsSystemRole], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @normalizedName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@normalizedName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Description], [a].[IsSystemRole], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @normalizedName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@normalizedName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Description], [a].[IsSystemRole], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @normalizedName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@normalizedName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Description], [a].[IsSystemRole], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @normalizedName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@so_Code='?' (Size = 100)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityObjects] AS [s]
+              WHERE [s].[Code] = @so_Code) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@normalizedName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Description], [a].[IsSystemRole], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @normalizedName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [s].[Id], [s].[Category], [s].[Code], [s].[Description], [s].[Name]
+      FROM [SecurityObjects] AS [s]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@8__locals1_adminRole_Id='?' (DbType = Int32), @obj_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SecurityGroupPermissions] AS [s]
+              WHERE [s].[RoleId] = @8__locals1_adminRole_Id AND [s].[SecurityObjectId] = @obj_Id) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@normalizedUserName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[AvatarUrl], [a].[ConcurrencyStamp], [a].[CreatedAt], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[IsActive], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [AspNetUsers] AS [a]
+      WHERE [a].[NormalizedUserName] = @normalizedUserName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@normalizedUserName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[AvatarUrl], [a].[ConcurrencyStamp], [a].[CreatedAt], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[IsActive], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [AspNetUsers] AS [a]
+      WHERE [a].[NormalizedUserName] = @normalizedUserName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (10ms) [Parameters=[@p18='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p19='?' (Size = 4000), @p3='?' (DbType = DateTime2), @p4='?' (Size = 256), @p5='?' (DbType = Boolean), @p6='?' (Size = 4000), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?' (DbType = DateTimeOffset), @p10='?' (Size = 256), @p11='?' (Size = 256), @p12='?' (Size = 4000), @p13='?' (Size = 4000), @p14='?' (DbType = Boolean), @p15='?' (Size = 4000), @p16='?' (DbType = Boolean), @p17='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SET IMPLICIT_TRANSACTIONS OFF;
+      SET NOCOUNT ON;
+      UPDATE [AspNetUsers] SET [AccessFailedCount] = @p0, [AvatarUrl] = @p1, [ConcurrencyStamp] = @p2, [CreatedAt] = @p3, [Email] = @p4, [EmailConfirmed] = @p5, [FullName] = @p6, [IsActive] = @p7, [LockoutEnabled] = @p8, [LockoutEnd] = @p9, [NormalizedEmail] = @p10, [NormalizedUserName] = @p11, [PasswordHash] = @p12, [PhoneNumber] = @p13, [PhoneNumberConfirmed] = @p14, [SecurityStamp] = @p15, [TwoFactorEnabled] = @p16, [UserName] = @p17
+      OUTPUT 1
+      WHERE [Id] = @p18 AND [ConcurrencyStamp] = @p19;
+✅ [SEED] Admin password successfully reset to 'Admin123*'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (40ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Promotions' AND xtype='U')
+              BEGIN
+                  CREATE TABLE Promotions (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      Name nvarchar(100) NOT NULL,
+                      Description nvarchar(255) NOT NULL,
+                      StartDate datetime2 NOT NULL,
+                      EndDate datetime2 NULL,
+                      IsActive bit NOT NULL,
+                      Priority int NOT NULL,
+                      RequiresCoupon bit NOT NULL,
+                      AutoApply bit NOT NULL,
+                      Stackable bit NOT NULL,
+                      ApplyTo nvarchar(20) NOT NULL DEFAULT 'Both',
+                      CreatedAt datetime2 NOT NULL DEFAULT GETDATE()
+                  )
+              END
+              ELSE
+              BEGIN
+                  IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[Promotions]') AND name = 'ApplyTo')
+                  BEGIN
+                      ALTER TABLE Promotions ADD ApplyTo nvarchar(20) NOT NULL DEFAULT 'Both'
+                  END
+              END
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PromotionRules' AND xtype='U')
+              BEGIN
+                  CREATE TABLE PromotionRules (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      PromotionId int NOT NULL FOREIGN KEY REFERENCES Promotions(Id) ON DELETE CASCADE,
+                      Type nvarchar(50) NOT NULL,
+                      Operator nvarchar(20) NOT NULL,
+                      Value nvarchar(max) NOT NULL,
+                      [Group] int NOT NULL
+                  )
+              END
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PromotionActions' AND xtype='U')
+              BEGIN
+                  CREATE TABLE PromotionActions (
+                      Id int IDENTITY(1,1) PRIMARY KEY,
+                      PromotionId int NOT NULL FOREIGN KEY REFERENCES Promotions(Id) ON DELETE CASCADE,
+                      Type nvarchar(50) NOT NULL,
+                      Value decimal(18,2) NOT NULL,
+                      AppliesTo nvarchar(50) NOT NULL,
+                      TargetArtifact nvarchar(max) NULL
+                  )
+              END
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PromotionCoupons' AND xtype='U')
+              BEGIN
+                  CREATE TABLE PromotionCoupons (
+                      Code nvarchar(50) PRIMARY KEY,
+                      PromotionId int NOT NULL FOREIGN KEY REFERENCES Promotions(Id) ON DELETE CASCADE,
+                      MaxUses int NULL,
+                      UsedCount int NOT NULL DEFAULT 0,
+                      CustomerId int NULL,
+                      IsActive bit NOT NULL DEFAULT 1
+                  )
+              END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CobrosMaster' AND xtype='U')
+              CREATE TABLE CobrosMaster (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  NumeroCobro nvarchar(50) NOT NULL,
+                  ClienteId int NOT NULL,
+                  Fecha datetime NOT NULL,
+                  Monto decimal(18,2) NOT NULL,
+                  MetodoPago nvarchar(50),
+                  Referencia nvarchar(100),
+                  MonedaId int,
+                  TasaCambio decimal(18,4) DEFAULT 1,
+                  Observaciones nvarchar(500),
+                  Usuario nvarchar(50),
+                  FechaCreacion datetime DEFAULT GETDATE()
+              )
+      
+              IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CobrosDetalle' AND xtype='U')
+              CREATE TABLE CobrosDetalle (
+                  Id int IDENTITY(1,1) PRIMARY KEY,
+                  CobroId int NOT NULL FOREIGN KEY REFERENCES CobrosMaster(Id),
+                  VentaId int NOT NULL,
+                  MontoAplicado decimal(18,2) NOT NULL
+              )
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@normalizedRoleName='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Description], [a].[IsSystemRole], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @normalizedRoleName
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@p='?' (DbType = Int32), @p0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[UserId], [a].[RoleId]
+      FROM [AspNetUserRoles] AS [a]
+      WHERE [a].[UserId] = @p AND [a].[RoleId] = @p0
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5006
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: c:\POS CRONO\Backend
+[Ventas Error] Failed to get history: Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'Secuencia'.
+Invalid column name 'Impuestos'.
+Invalid column name 'Subtotal'.
+Invalid column name 'Impuestos'.
+Invalid column name 'Total'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Dapper.SqlMapper.QueryAsync[T](IDbConnection cnn, Type effectiveType, CommandDefinition command) in /_/Dapper/SqlMapper.Async.cs:line 434
+   at PosCrono.API.Controllers.VentasController.GetHistory() in c:\POS CRONO\Backend\Controllers\VentasController.cs:line 478
+ClientConnectionId:972aad06-0a51-436a-a13c-e1586492873b
+Error Number:207,State:1,Class:16
+[DEBUG] GetSequences found 10 records:
+ - ID: 1, Tipo: 'B01', Nombre: 'Factura de Credito Fiscal', Prefijo: 'B01'
+ - ID: 2, Tipo: 'B02', Nombre: 'Factura de Consumo', Prefijo: 'B02'
+ - ID: 9, Tipo: 'B11', Nombre: 'Proveedor Informal', Prefijo: 'B11'
+ - ID: 10, Tipo: 'B12', Nombre: 'Registro Único de Ingresos', Prefijo: 'B12'
+ - ID: 11, Tipo: 'B13', Nombre: 'Gastos Menores', Prefijo: 'B13'
+ - ID: 12, Tipo: 'B14', Nombre: 'Regímenes Especiales', Prefijo: 'B14'
+ - ID: 13, Tipo: 'B15', Nombre: 'Comprobantes Gubernamentales', Prefijo: 'B15'
+ - ID: 14, Tipo: 'B16', Nombre: 'Exportaciones', Prefijo: 'B16'
+ - ID: 15, Tipo: 'B17', Nombre: 'Pagos al Exterior', Prefijo: 'B17'
+ - ID: 16, Tipo: '04', Nombre: 'Nota de CrÃ©dito', Prefijo: 'B04'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [c].[Id], [c].[Address], [c].[Balance], [c].[Code], [c].[Company], [c].[Email], [c].[Moneda], [c].[Name], [c].[NivelPrecio], [c].[Phone], [c].[SellerName], [c].[Status], [c].[TaxId], [c].[TipoNCF]
+      FROM [Clients] AS [c]
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (13ms) [Parameters=[@now='?' (DbType = DateTime2), @now0='?' (DbType = DateTime2), @cart_ApplyTo='?' (Size = 20)], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[ApplyTo], [p].[AutoApply], [p].[CreatedAt], [p].[Description], [p].[EndDate], [p].[IsActive], [p].[Name], [p].[Priority], [p].[RequiresCoupon], [p].[Stackable], [p].[StartDate], [p0].[Id], [p0].[Group], [p0].[Operator], [p0].[PromotionId], [p0].[Type], [p0].[Value], [p1].[Id], [p1].[AppliesTo], [p1].[PromotionId], [p1].[TargetArtifact], [p1].[Type], [p1].[Value]
+      FROM [Promotions] AS [p]
+      LEFT JOIN [PromotionRules] AS [p0] ON [p].[Id] = [p0].[PromotionId]
+      LEFT JOIN [PromotionActions] AS [p1] ON [p].[Id] = [p1].[PromotionId]
+      WHERE [p].[IsActive] = CAST(1 AS bit) AND [p].[StartDate] <= @now AND ([p].[EndDate] IS NULL OR [p].[EndDate] >= @now0) AND ([p].[ApplyTo] = N'Both' OR [p].[ApplyTo] = @cart_ApplyTo)
+      ORDER BY [p].[Priority] DESC, [p].[Id], [p0].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[@now='?' (DbType = DateTime2), @now0='?' (DbType = DateTime2), @cart_ApplyTo='?' (Size = 20)], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[ApplyTo], [p].[AutoApply], [p].[CreatedAt], [p].[Description], [p].[EndDate], [p].[IsActive], [p].[Name], [p].[Priority], [p].[RequiresCoupon], [p].[Stackable], [p].[StartDate], [p0].[Id], [p0].[Group], [p0].[Operator], [p0].[PromotionId], [p0].[Type], [p0].[Value], [p1].[Id], [p1].[AppliesTo], [p1].[PromotionId], [p1].[TargetArtifact], [p1].[Type], [p1].[Value]
+      FROM [Promotions] AS [p]
+      LEFT JOIN [PromotionRules] AS [p0] ON [p].[Id] = [p0].[PromotionId]
+      LEFT JOIN [PromotionActions] AS [p1] ON [p].[Id] = [p1].[PromotionId]
+      WHERE [p].[IsActive] = CAST(1 AS bit) AND [p].[StartDate] <= @now AND ([p].[EndDate] IS NULL OR [p].[EndDate] >= @now0) AND ([p].[ApplyTo] = N'Both' OR [p].[ApplyTo] = @cart_ApplyTo)
+      ORDER BY [p].[Priority] DESC, [p].[Id], [p0].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@now='?' (DbType = DateTime2), @now0='?' (DbType = DateTime2), @cart_ApplyTo='?' (Size = 20)], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[ApplyTo], [p].[AutoApply], [p].[CreatedAt], [p].[Description], [p].[EndDate], [p].[IsActive], [p].[Name], [p].[Priority], [p].[RequiresCoupon], [p].[Stackable], [p].[StartDate], [p0].[Id], [p0].[Group], [p0].[Operator], [p0].[PromotionId], [p0].[Type], [p0].[Value], [p1].[Id], [p1].[AppliesTo], [p1].[PromotionId], [p1].[TargetArtifact], [p1].[Type], [p1].[Value]
+      FROM [Promotions] AS [p]
+      LEFT JOIN [PromotionRules] AS [p0] ON [p].[Id] = [p0].[PromotionId]
+      LEFT JOIN [PromotionActions] AS [p1] ON [p].[Id] = [p1].[PromotionId]
+      WHERE [p].[IsActive] = CAST(1 AS bit) AND [p].[StartDate] <= @now AND ([p].[EndDate] IS NULL OR [p].[EndDate] >= @now0) AND ([p].[ApplyTo] = N'Both' OR [p].[ApplyTo] = @cart_ApplyTo)
+      ORDER BY [p].[Priority] DESC, [p].[Id], [p0].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@now='?' (DbType = DateTime2), @now0='?' (DbType = DateTime2), @cart_ApplyTo='?' (Size = 20)], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[ApplyTo], [p].[AutoApply], [p].[CreatedAt], [p].[Description], [p].[EndDate], [p].[IsActive], [p].[Name], [p].[Priority], [p].[RequiresCoupon], [p].[Stackable], [p].[StartDate], [p0].[Id], [p0].[Group], [p0].[Operator], [p0].[PromotionId], [p0].[Type], [p0].[Value], [p1].[Id], [p1].[AppliesTo], [p1].[PromotionId], [p1].[TargetArtifact], [p1].[Type], [p1].[Value]
+      FROM [Promotions] AS [p]
+      LEFT JOIN [PromotionRules] AS [p0] ON [p].[Id] = [p0].[PromotionId]
+      LEFT JOIN [PromotionActions] AS [p1] ON [p].[Id] = [p1].[PromotionId]
+      WHERE [p].[IsActive] = CAST(1 AS bit) AND [p].[StartDate] <= @now AND ([p].[EndDate] IS NULL OR [p].[EndDate] >= @now0) AND ([p].[ApplyTo] = N'Both' OR [p].[ApplyTo] = @cart_ApplyTo)
+      ORDER BY [p].[Priority] DESC, [p].[Id], [p0].[Id]
+[Ventas Error] Failed to get history: Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'Secuencia'.
+Invalid column name 'Impuestos'.
+Invalid column name 'Subtotal'.
+Invalid column name 'Impuestos'.
+Invalid column name 'Total'.
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Dapper.SqlMapper.QueryAsync[T](IDbConnection cnn, Type effectiveType, CommandDefinition command) in /_/Dapper/SqlMapper.Async.cs:line 434
+   at PosCrono.API.Controllers.VentasController.GetHistory() in c:\POS CRONO\Backend\Controllers\VentasController.cs:line 478
+ClientConnectionId:4a4caecc-be5f-40c8-b84b-c7e2d897c74d
+Error Number:207,State:1,Class:16

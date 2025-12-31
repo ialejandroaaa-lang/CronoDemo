@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/* Variables comunes */
+@theme {
+  --color-hd-orange: #F96302;
+  --color-hd-black: #0f172a;
+
+  @keyframes shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  --animate-shimmer: shimmer 2s infinite;
+  --animate-spin-slow: spin-slow 8s linear infinite;
+}
+
+/* Tema original (claro - Suave) */
+html.theme-original {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Tema Home Depot (Oscuro Premium - Menos agresivo que el negro puro) */
+html.theme-homeDepot {
+  background-color: #020617;
+  color: #f8fafc;
+}
+
+/* Tema Soft Dark (Slate - Muy relajante para la vista) */
+html.theme-soft-dark {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Variables globales basadas en el tema */
+:root {
+  --hd-orange: #F96302;
+}
+
+.theme-soft-dark {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+}
+
+.theme-original {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+}
+
+/* GLOBAL INPUT VISIBILITY FIX */
+@layer base {
+
+  input,
+  select,
+  textarea {
+    @apply text-gray-900 font-medium;
+  }
+
+  input::placeholder {
+    @apply text-gray-400;
+  }
+
+  /* Fix specific issue with disabled inputs being too light */
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    @apply text-gray-600 bg-gray-100 opacity-100 cursor-not-allowed;
+  }
+}

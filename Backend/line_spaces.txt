@@ -1,0 +1,1 @@
+[SPACE][SPACE][SPACE][SPACE][SPACE][SPACE][SPACE][SPACE][SPACE]userManager.AddToRoleAsync(adminUser,[SPACE]"ADMINISTRADORES").GetAwaiter().GetResult();

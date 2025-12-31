@@ -1,0 +1,13 @@
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+
+export const getKardex = async (almacenId) => {
+    const url = almacenId
+        ? `${API_BASE}/Kardex?almacenId=${almacenId}`
+        : `${API_BASE}/Kardex`;
+
+    const res = await fetch(url);
+    if (!res.ok) {
+        throw new Error(`Failed to get kardex: ${res.status}`);
+    }
+    return res.json();
+};

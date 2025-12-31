@@ -1,0 +1,15 @@
+[bB]in/
+[oO]bj/
+.vs/
+*.user
+*.pdb
+*.suo
+*.db-shm
+*.db-wal
+# Don't ignore .db for demo (we want prepopulated data)
+*.db 
+node_modules/
+.env
+.DS_Store
+MacBuild/
+MacDemo.zip
