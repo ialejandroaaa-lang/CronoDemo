@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5006/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const getCotizaciones = async () => {
     const res = await fetch(`${API_URL}/Cotizaciones`);

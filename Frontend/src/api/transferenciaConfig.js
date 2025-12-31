@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5006/api') + '/TransferenciaConfiguration';
+const API_URL = (import.meta.env.VITE_API_URL || '/api') + '/TransferenciaConfiguration';
 
 export const getTransferenciaConfig = async () => {
     try {

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5006/api/MotivosAjuste';
+const API_URL = '/api/MotivosAjuste';
 
 export const getMotivos = async () => {
     const response = await fetch(API_URL);

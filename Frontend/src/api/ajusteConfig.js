@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5006/api') + '/AjusteConfiguration';
+const API_URL = (import.meta.env.VITE_API_URL || '/api') + '/AjusteConfiguration';
 
 export const getAjusteConfig = async () => {
     try {
