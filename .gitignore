@@ -2,6 +2,10 @@
 [oO]bj/
 .vs/
 *.user
+# Build outputs
+/DIST/
+/dist/
+*.zip
 *.pdb
 *.suo
 *.db-shm
