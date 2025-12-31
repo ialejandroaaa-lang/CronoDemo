@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_API_URL || '/api') + '/TransferenciaConfiguration';
+const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api') + '/TransferenciaConfiguration';
 
 export const getTransferenciaConfig = async () => {
     try {
@@ -25,4 +25,5 @@ export const updateTransferenciaConfig = async (config) => {
         throw error;
     }
 };
+
 

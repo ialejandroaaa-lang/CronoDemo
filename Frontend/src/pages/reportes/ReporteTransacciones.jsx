@@ -5,7 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { FileText, Download, Search, Filter, ArrowUpDown, ArrowUp, ArrowDown, X, ChevronRight } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 const ReporteTransacciones = () => {
     const [transacciones, setTransacciones] = useState([]);
@@ -577,4 +577,5 @@ const DateTreeComponent = ({ tree, selectedPaths, onToggle, depth = 0, path = ""
 };
 
 export default ReporteTransacciones;
+
 

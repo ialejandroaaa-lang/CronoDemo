@@ -1,5 +1,5 @@
 // API para gestión de plantillas de recibos
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getReceiptTemplates = async () => {
     const response = await fetch(`${API_BASE}/ReceiptTemplates`);
@@ -62,4 +62,5 @@ export const duplicateTemplate = async (id) => {
     if (!response.ok) throw new Error('Error al duplicar plantilla');
     return response.json();
 };
+
 

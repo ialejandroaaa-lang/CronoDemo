@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_API_URL || '/api') + '/AjusteConfiguration';
+const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api') + '/AjusteConfiguration';
 
 export const getAjusteConfig = async () => {
     try {
@@ -33,4 +33,5 @@ export const updateAjusteConfig = async (config) => {
         throw error;
     }
 };
+
 

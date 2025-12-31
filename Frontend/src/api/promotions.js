@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 const ENDPOINT = '/Promotions';
 
 export const getPromotions = async () => {
@@ -68,4 +68,5 @@ export const calculateCartPromotions = async (cartDto) => {
     if (!res.ok) throw new Error("Failed to calculate promotions");
     return res.json();
 };
+
 

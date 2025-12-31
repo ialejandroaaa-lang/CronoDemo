@@ -21,3 +21,4 @@ const SmartList_Articulos = () => {
 
 export default SmartList_Articulos;
 
+

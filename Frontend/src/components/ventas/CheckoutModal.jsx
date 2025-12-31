@@ -5,7 +5,7 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { printReceipt } from '../receipt/PrintService';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 const CheckoutModal = ({ isOpen, onClose, cartData, onComplete, selectedWarehouseId = 1, creditNote = null }) => {
     // Logic: If creditNote exists, it covers up to grandTotal
@@ -492,4 +492,5 @@ const CheckoutModal = ({ isOpen, onClose, cartData, onComplete, selectedWarehous
 };
 
 export default CheckoutModal;
+
 

@@ -1,4 +1,4 @@
-export const API_BASE = import.meta.env.VITE_API_URL || '/api';
+export const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getNivelesPrecio = async () => {
     const res = await fetch(`${API_BASE}/NivelesPrecio`);
@@ -33,4 +33,5 @@ export const deleteNivelPrecio = async (id) => {
     if (!res.ok) throw new Error('Error deleting price level');
     return true;
 };
+
 

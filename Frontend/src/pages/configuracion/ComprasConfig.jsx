@@ -3,7 +3,7 @@ import { Save, FileText, Package } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 const ComprasConfig = () => {
     const [sequences, setSequences] = useState([]);
@@ -140,4 +140,5 @@ const ComprasConfig = () => {
 };
 
 export default ComprasConfig;
+
 

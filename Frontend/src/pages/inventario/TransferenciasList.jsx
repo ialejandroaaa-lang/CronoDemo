@@ -8,7 +8,7 @@ import {
     Table, TableHeader, TableBody, TableRow, TableHead, TableCell
 } from '../../components/ui/Table';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 const TransferenciasList = () => {
     const navigate = useNavigate();
@@ -171,4 +171,5 @@ const TransferenciasList = () => {
 };
 
 export default TransferenciasList;
+
 

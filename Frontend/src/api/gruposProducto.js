@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getGruposProducto = async () => {
     try {
@@ -44,4 +44,5 @@ export const deleteGrupoProducto = async (id) => {
         throw error;
     }
 };
+
 

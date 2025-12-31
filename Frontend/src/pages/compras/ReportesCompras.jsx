@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 const ReportesCompras = () => {
     const [activeTab, setActiveTab] = useState('resumen');
@@ -584,4 +584,5 @@ const ReportesCompras = () => {
 };
 
 export default ReportesCompras;
+
 

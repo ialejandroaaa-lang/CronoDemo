@@ -63,7 +63,7 @@ const CompraForm = () => {
 
     const loadConfig = async () => {
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || '/api';
+            const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
             const res = await fetch(`${API_BASE}/ProveedorConfiguration`);
             if (res.ok) {
                 const conf = await res.json();
@@ -138,7 +138,7 @@ const CompraForm = () => {
 
     const loadCatalogs = async () => {
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || '/api';
+            const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
             const [provs, alms, mons, pls] = await Promise.all([
                 getProveedores(),
                 getAlmacenes(),
@@ -193,7 +193,7 @@ const CompraForm = () => {
         }
 
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || '/api';
+            const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
             const res = await fetch(`${API_BASE}/Monedas/tasas?monedaId=${monId}&fecha=${fecha}`);
             if (res.ok) {
                 const data = await res.json();
@@ -258,7 +258,7 @@ const CompraForm = () => {
         // Fetch prices for this product to know available U.M. and prices
         let productPrices = [];
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || '/api';
+            const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
             const res = await fetch(`${API_BASE}/Articulos/${product.id}/Precios`);
             if (res.ok) productPrices = await res.json();
         } catch (e) {
@@ -871,4 +871,5 @@ const CompraForm = () => {
 };
 
 export default CompraForm;
+
 

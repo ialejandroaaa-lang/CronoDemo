@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getPrecios = async (articuloId) => {
     const res = await fetch(`${API_BASE}/Articulos/${articuloId}/Precios`);
@@ -34,4 +34,5 @@ export const getReportePrecios = async () => {
     if (!res.ok) throw new Error('Error al obtener reporte de precios');
     return res.json();
 };
+
 

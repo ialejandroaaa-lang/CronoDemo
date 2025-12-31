@@ -54,7 +54,7 @@ const VentasList = () => {
     };
 
     const handlePrint = (row) => {
-        const baseUrl = import.meta.env.VITE_API_URL || '/api';
+        const baseUrl = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
         const reportBase = baseUrl.replace('/api', '');
 
         let path = 'Factura';
@@ -310,4 +310,5 @@ const VentasList = () => {
 };
 
 export default VentasList;
+
 

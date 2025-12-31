@@ -117,3 +117,4 @@ const GrupoImpuestoModal = ({ isOpen, onClose, onSave, initialData, error: exter
 
 export default GrupoImpuestoModal;
 
+

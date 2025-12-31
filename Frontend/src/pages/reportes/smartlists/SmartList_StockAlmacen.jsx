@@ -18,3 +18,4 @@ const SmartList_StockAlmacen = () => {
 
 export default SmartList_StockAlmacen;
 
+

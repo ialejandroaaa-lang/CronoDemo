@@ -1,5 +1,5 @@
 // src/api/articuloConfig.js
-export const API_BASE = import.meta.env.VITE_API_URL || '/api';
+export const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getConfig = async () => {
     const res = await fetch(`${API_BASE}/ArticuloConfiguration`);
@@ -51,4 +51,5 @@ export const generarNumeroArticulo = async (grupoProducto) => {
     }
     return res.json();
 };
+
 

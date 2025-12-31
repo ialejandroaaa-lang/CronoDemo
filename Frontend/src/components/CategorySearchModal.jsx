@@ -106,3 +106,4 @@ const CategorySearchModal = ({ isOpen, onClose, onSelect }) => {
 
 export default CategorySearchModal;
 
+

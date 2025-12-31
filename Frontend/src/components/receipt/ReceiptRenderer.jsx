@@ -242,3 +242,4 @@ const ReceiptRenderer = ({ template, data }, ref) => {
 
 export default React.forwardRef(ReceiptRenderer);
 
+

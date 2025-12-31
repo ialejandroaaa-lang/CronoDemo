@@ -369,3 +369,4 @@ const ProductSearchModal = ({ isOpen, onClose, onSelect, clientContext }) => {
 
 export default ProductSearchModal;
 
+

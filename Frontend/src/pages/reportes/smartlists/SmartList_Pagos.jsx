@@ -19,3 +19,4 @@ const SmartList_Pagos = () => {
 
 export default SmartList_Pagos;
 
+

@@ -77,7 +77,7 @@ const ProveedorForm = () => {
 
     const fetchNextCode = async () => {
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || '/api';
+            const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
             const res = await fetch(`${API_BASE}/ProveedorConfiguration/NextCode`);
             if (res.ok) {
                 const code = await res.text();
@@ -91,7 +91,7 @@ const ProveedorForm = () => {
 
     const loadConfig = async () => {
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || '/api';
+            const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
             const res = await fetch(`${API_BASE}/ProveedorConfiguration`);
             if (res.ok) {
                 const conf = await res.json();
@@ -143,7 +143,7 @@ const ProveedorForm = () => {
         };
 
         try {
-            const API_BASE = import.meta.env.VITE_API_URL || '/api';
+            const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
             if (isEditMode) {
                 await updateProveedor(parseInt(id), { ...data, Id: parseInt(id) });
@@ -349,4 +349,5 @@ const ProveedorForm = () => {
 };
 
 export default ProveedorForm;
+
 

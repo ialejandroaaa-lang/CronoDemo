@@ -638,7 +638,7 @@ const ProductoForm = () => {
         setImagenUrl('');
     };
 
-    const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api')?.replace('/api', '') || window.location.origin;
+    const API_BASE_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')?.replace('/api', '') || window.location.origin;
 
     return (
         <div className="space-y-6 max-w-7xl mx-auto">
@@ -1714,4 +1714,5 @@ const ProductoForm = () => {
 };
 
 export default ProductoForm;
+
 

@@ -8,7 +8,7 @@ import { getNivelesPrecio } from '../../api/nivelesPrecio';
 // Migrated to generalized Sequences API
 import { updateReciboConfig } from '../../api/recibos'; // Still used for legacy or we can remove if fully migrated
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/Tabs';
 
@@ -559,4 +559,5 @@ const PosConfig = () => {
 };
 
 export default PosConfig;
+
 

@@ -8,7 +8,7 @@ const TrialBanner = () => {
     useEffect(() => {
         const fetchStatus = async () => {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/Trial/status`);
+                const res = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/Trial/status`);
                 if (res.ok) {
                     const data = await res.json();
                     setTrialInfo(data);
@@ -45,7 +45,7 @@ const TrialBanner = () => {
                     <button
                         onClick={async () => {
                             const key = document.getElementById('licenseKey').value;
-                            const res = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/Trial/activate`, {
+                            const res = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/Trial/activate`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ key })
@@ -87,4 +87,5 @@ const TrialBanner = () => {
 };
 
 export default TrialBanner;
+
 

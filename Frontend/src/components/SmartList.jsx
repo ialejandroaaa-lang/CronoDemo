@@ -9,7 +9,7 @@ import {
     ListFilter, MoreVertical, LayoutGrid
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 /**
  * SmartList Component
@@ -392,4 +392,5 @@ const formatValue = (val, type, symbol = 'RD$') => {
 };
 
 export default SmartList;
+
 

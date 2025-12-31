@@ -24,3 +24,4 @@ export const updateClient = async (id, client) => {
     return await response.json();
 };
 
+

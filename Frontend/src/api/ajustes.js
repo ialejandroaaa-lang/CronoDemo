@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_API_URL || '/api') + '/Ajustes';
+const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api') + '/Ajustes';
 
 export const createAjuste = async (ajuste) => {
     const res = await fetch(API_URL, {
@@ -35,4 +35,5 @@ export const getAjusteById = async (id) => {
     }
     return res.json();
 };
+
 

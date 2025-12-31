@@ -100,3 +100,4 @@ const Tipos = () => {
 
 export default Tipos;
 
+

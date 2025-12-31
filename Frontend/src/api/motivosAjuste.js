@@ -36,3 +36,4 @@ export const deleteMotivo = async (id) => {
     return true;
 };
 
+

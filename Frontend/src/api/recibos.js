@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getReciboConfig = async () => {
     const response = await fetch(`${API_BASE}/Recibos/config`);
@@ -17,4 +17,5 @@ export const updateReciboConfig = async (config) => {
     if (!response.ok) throw new Error('Error updating config');
     return await response.json();
 };
+
 

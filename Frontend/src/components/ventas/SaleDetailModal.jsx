@@ -141,3 +141,4 @@ const SaleDetailModal = ({ isOpen, onClose, sale }) => {
 
 export default SaleDetailModal;
 
+

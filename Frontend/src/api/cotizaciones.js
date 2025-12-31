@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getCotizaciones = async () => {
     const res = await fetch(`${API_URL}/Cotizaciones`);
@@ -42,4 +42,5 @@ export const updateCotizacion = async (id, cotizacion) => {
     }
     return await res.json();
 };
+
 

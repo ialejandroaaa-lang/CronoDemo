@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getVentas = async () => {
     const response = await fetch(`${API_URL}/Ventas`);
@@ -47,4 +47,5 @@ export const getNCFSequences = async () => {
 
 // Alias for backward compatibility
 export const getSecuenciasNCF = getNCFSequences;
+
 

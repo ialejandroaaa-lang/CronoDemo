@@ -5,7 +5,7 @@ import { Input } from '../../components/ui/Input';
 import { Search, Plus, Calendar, CheckCircle, CreditCard, X, DollarSign, User } from 'lucide-react';
 import { getClients } from '../../api/clientes';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 const CobrosCliente = () => {
     // State
@@ -481,4 +481,5 @@ const CobrosCliente = () => {
 };
 
 export default CobrosCliente;
+
 

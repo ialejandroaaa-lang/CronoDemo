@@ -20,3 +20,4 @@ const SmartList_Cobros = () => {
 
 export default SmartList_Cobros;
 
+

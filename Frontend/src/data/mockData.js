@@ -19,3 +19,4 @@ export const mockProductos = [
     { id: 5, codigo: 'PROD-005', descripcion: 'Lija de agua #150', categoria: 'Abrasivos', precio: 0.50, stock: 500, estado: 'Activo' },
 ];
 
+

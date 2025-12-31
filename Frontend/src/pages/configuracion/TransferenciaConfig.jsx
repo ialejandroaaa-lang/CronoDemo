@@ -192,3 +192,4 @@ const TransferenciaConfig = () => {
 
 export default TransferenciaConfig;
 
+

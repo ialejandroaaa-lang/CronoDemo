@@ -74,7 +74,7 @@ const ProveedorConfig = () => {
     const fetchConfig = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/ProveedorConfiguration`);
+            const res = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/ProveedorConfiguration`);
             if (res.ok) {
                 const data = await res.json();
                 setConfig(data);
@@ -92,7 +92,7 @@ const ProveedorConfig = () => {
 
     const handleSave = async () => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/ProveedorConfiguration`, {
+            const res = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/ProveedorConfiguration`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(config)
@@ -310,4 +310,5 @@ const ProveedorConfig = () => {
 };
 
 export default ProveedorConfig;
+
 

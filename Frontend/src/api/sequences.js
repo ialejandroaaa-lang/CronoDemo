@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_API_URL || '/api') + '/Sequences';
+const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api') + '/Sequences';
 
 export const getSequences = async () => {
     try {
@@ -37,4 +37,5 @@ export const updateSequence = async (id, sequence) => {
         throw error;
     }
 };
+
 

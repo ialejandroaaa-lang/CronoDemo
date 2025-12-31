@@ -31,7 +31,7 @@ const SecurityEditor = () => {
 
     const fetchGroups = async () => {
         try {
-            const resp = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/groups`, {
+            const resp = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/SecurityEditor/groups`, {
                 headers: { 'Authorization': `Bearer ${user.token}` }
             });
             const data = await resp.json();
@@ -44,7 +44,7 @@ const SecurityEditor = () => {
 
     const fetchCatalog = async () => {
         try {
-            const resp = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/permissions-catalog`, {
+            const resp = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/SecurityEditor/permissions-catalog`, {
                 headers: { 'Authorization': `Bearer ${user.token}` }
             });
             const data = await resp.json();
@@ -57,7 +57,7 @@ const SecurityEditor = () => {
     const fetchGroupPermissions = async (groupId) => {
         setLoading(true);
         try {
-            const resp = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/group-permissions/${groupId}`, {
+            const resp = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/SecurityEditor/group-permissions/${groupId}`, {
                 headers: { 'Authorization': `Bearer ${user.token}` }
             });
             const data = await resp.json();
@@ -90,7 +90,7 @@ const SecurityEditor = () => {
         setSaving(true);
         setMessage({ type: '', text: '' });
         try {
-            const resp = await fetch(`${import.meta.env.VITE_API_URL || '/api'}/SecurityEditor/group-permissions/bulk-update`, {
+            const resp = await fetch(`${((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api')}/SecurityEditor/group-permissions/bulk-update`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -313,4 +313,5 @@ const SecurityEditor = () => {
 };
 
 export default SecurityEditor;
+
 

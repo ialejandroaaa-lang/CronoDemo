@@ -106,3 +106,4 @@ const AttributeModal = ({ isOpen, onClose, onSave, title, type, initialData, err
 
 export default AttributeModal;
 
+

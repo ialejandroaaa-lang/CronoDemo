@@ -1,4 +1,4 @@
-export const API_BASE = import.meta.env.VITE_API_URL || '/api';
+export const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 // --- Categorias ---
 export const getCategorias = async () => {
@@ -77,4 +77,5 @@ export const deleteTipo = async (id) => {
     if (!res.ok) throw new Error('Error al eliminar tipo');
     return res.ok;
 };
+
 

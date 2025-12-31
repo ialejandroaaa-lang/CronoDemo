@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getCompras = async () => {
     const res = await fetch(`${API_BASE}/Compras`);
@@ -39,4 +39,5 @@ export const anularCompra = async (id) => {
     }
     return res.json();
 };
+
 

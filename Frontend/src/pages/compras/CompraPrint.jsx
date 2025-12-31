@@ -169,3 +169,4 @@ const CompraPrint = () => {
 
 export default CompraPrint;
 
+

@@ -30,3 +30,4 @@ const ProtectedRoute = ({ permission }) => {
 
 export default ProtectedRoute;
 
+

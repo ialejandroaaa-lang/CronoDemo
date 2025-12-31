@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 export const getProveedores = async () => {
     const res = await fetch(`${API_BASE}/Proveedores`);
@@ -53,4 +53,5 @@ export const deleteProveedor = async (id) => {
     }
     return true;
 };
+
 

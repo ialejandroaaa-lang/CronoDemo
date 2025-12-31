@@ -42,7 +42,7 @@ const ReturnsPage = () => {
         setSelectedItems({});
 
         try {
-            const API_URL = import.meta.env.VITE_API_URL || '/api';
+            const API_URL = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
             const response = await fetch(`${API_URL}/Returns/Search/${invNum.trim()}`);
 
             if (response.ok) {
@@ -352,4 +352,5 @@ const ReturnsPage = () => {
 };
 
 export default ReturnsPage;
+
 

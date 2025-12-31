@@ -26,7 +26,7 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = ((import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== 'undefined') ? import.meta.env.VITE_API_URL : '/api');
 
 const COLORS = ['#FF6600', '#000000', '#666666', '#999999', '#CCCCCC'];
 
@@ -405,4 +405,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
 
