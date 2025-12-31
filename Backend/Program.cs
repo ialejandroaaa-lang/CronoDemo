@@ -14,7 +14,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 
 // Modern Inventory Services
-builder.Services.AddTransient<IEmailService, EmailService>();
+// builder.Services.AddTransient<IEmailService, EmailService>();
 
 // SQLite Configuration for Demo
 var connectionString = "Data Source=cronodemo.db";
